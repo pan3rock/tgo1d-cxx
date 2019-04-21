@@ -1,5 +1,6 @@
 set(FILES_SRC
         topography.cc
+        tgo.cc
         )
 
 add_library(tgo
@@ -10,4 +11,6 @@ add_library(tgo
 target_link_libraries(tgo
         PRIVATE
         fmt-header-only
+        ${NLOPT_LIBRARIES}
+        ${ARMADILLO_LIBRARIES}
         )
