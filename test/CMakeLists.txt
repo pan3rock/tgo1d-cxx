@@ -1,6 +1,7 @@
 set(FILES_SRC
         test_main.cc
         test_topography.cc
+        test_nlopt.cc
         )
 
 add_executable(
@@ -13,6 +14,7 @@ target_link_libraries(
         PRIVATE
         tgo
         fmt-header-only
+        ${NLOPT_LIBRARIES}
 )
 
 target_include_directories(
