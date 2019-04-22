@@ -2,6 +2,7 @@ set(FILES_SRC
         test_main.cc
         test_topography.cc
         test_nlopt.cc
+        test_tgo.cc
         )
 
 add_executable(

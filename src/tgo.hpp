@@ -10,37 +10,36 @@
 #include <armadillo>
 
 struct OptimizeResult {
-  OptimizeResult(const arma::vec &xl,
-                 const arma::vec &fl,
-                 double x, double f);
-  // copy and move
-  arma::vec xl;
-  arma::vec funl;
-  double x;
-  double f;
+    OptimizeResult(const arma::vec &xl,
+                   const arma::vec &fl,
+                   double x, double f);
+
+    // copy and move
+    arma::vec xl;
+    arma::vec funl;
+    double x;
+    double f;
 };
 
 class TGO {
 public:
-  TGO(const std::function<double(double)> functor,
-      int nsample,
-      int nk,
-      double xmin, double xmax,
-      double epsilon);
-  OptimizeResult optimize();
-private:
-  static double func_nlopt(const std::vector<double> &x,
-                    std::vector<double> &grad,
-                    void *f_data);
-  static double approx_grad(double x);
+    TGO(int nsample, int nk, double xmin, double xmax, double xtol);
 
-  int nsample_;
-  int nk_;
-  double xmin_;
-  double xmax_;
-  double epsilon_;
+    OptimizeResult optimize();
+
+private:
+    static double func_nlopt(const std::vector<double> &x,
+                             std::vector<double> &grad,
+                             void *f_data);
+    static double approx_grad(double x, double f, double epsilon);
+    static std::function<double(double)> functor_;
+    int nsample_;
+    int nk_;
+    double xmin_;
+    double xmax_;
+    double xtol_;
 };
 
-static std::function<double(double)> functor_;
+static double epsilon_ = 1.0e-9;
 
 #endif //TGO1D_CXX_TGO_HPP
