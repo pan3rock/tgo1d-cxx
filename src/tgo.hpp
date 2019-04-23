@@ -23,7 +23,8 @@ struct OptimizeResult {
 
 class TGO {
 public:
-    TGO(int nsample, int nk, double xmin, double xmax, double xtol);
+    TGO(std::function<double(double)> functor, int nsample, int nk, 
+        double xmin, double xmax, double xtol);
 
     OptimizeResult optimize();
 
@@ -32,13 +33,15 @@ private:
                              std::vector<double> &grad,
                              void *f_data);
     static double approx_grad(double x, double f, double epsilon);
-    static std::function<double(double)> functor_;
+    std::function<double(double)> functor_;
     int nsample_;
     int nk_;
     double xmin_;
     double xmax_;
     double xtol_;
     static constexpr double epsilon_ = 1.0e-9;
+
+    static TGO *pThis;
 };
 // so many `static` due to the requirement of static function in nlopt.
 

@@ -17,20 +17,28 @@ OptimizeResult::OptimizeResult(const arma::vec &xl,
                                double x, double f) :
         xl(xl), funl(fl), x(x), f(f) {}
 
+TGO *TGO::pThis = nullptr;
 
-TGO::TGO(int nsample, int nk,
+TGO::TGO(std::function<double(double)> functor,
+         int nsample, int nk,
          double xmin, double xmax, double xtol) :
+        functor_(std::move(functor)),
         nsample_(nsample),
         nk_(nk),
         xmin_(xmin),
         xmax_(xmax),
-        xtol_(xtol) { }
+        xtol_(xtol) { 
+    pThis = this;
+}
 
 
 double TGO::func_nlopt(const std::vector<double> &x,
                        std::vector<double> &grad,
                        void *f_data) {
-    double fev = functor_(x[0]);
+    if (pThis == nullptr) {
+        exit(-1);
+    }
+    double fev = pThis->functor_(x[0]);
     if (!grad.empty()) {
         grad[0] = approx_grad(x[0], fev, epsilon_);
     }
@@ -39,7 +47,10 @@ double TGO::func_nlopt(const std::vector<double> &x,
 
 
 double TGO::approx_grad(double x, double f, double epsilon) {
-    double fev = functor_(x + epsilon);
+    if (pThis == nullptr) {
+        exit(-1);
+    }
+    double fev = pThis->functor_(x + epsilon);
     double grad = (fev - f) / epsilon;
     return grad;
 }
