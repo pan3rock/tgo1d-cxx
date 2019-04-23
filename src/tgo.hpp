@@ -38,8 +38,8 @@ private:
     double xmin_;
     double xmax_;
     double xtol_;
+    static constexpr double epsilon_ = 1.0e-9;
 };
-
-static double epsilon_ = 1.0e-9;
+// so many `static` due to the requirement of static function in nlopt.
 
 #endif //TGO1D_CXX_TGO_HPP
