@@ -7,6 +7,13 @@ set(CMAKE_CXX_FLAGS "-Wall -g -fPIC")
 find_package(NLopt REQUIRED)
 find_package(Armadillo REQUIRED)
 
+if(ARMADILLO_FOUND)
+  message("armadillo found")
+  include_directories(${ARMADILLO_INCLUDE_DIRS})
+else()
+  message(FATAL_ERROR "Cannot find Armadillo")
+endif()
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/fmt EXCLUDE_FROM_ALL)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
