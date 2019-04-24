@@ -69,6 +69,8 @@ OptimizeResult TGO::optimize() {
     nlopt::opt opt(nlopt::LD_SLSQP, 1);
     std::vector<double> lb{xmin_}, ub{xmax_};
     opt.set_min_objective(func_nlopt, nullptr);
+    opt.set_lower_bounds(lb);
+    opt.set_upper_bounds(ub);
     opt.set_xtol_abs(xtol_);
     for (auto x0 : min_pool) {
         std::vector<double> xl{x0};
